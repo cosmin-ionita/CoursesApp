@@ -69,6 +69,7 @@
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:background="@color/colorPrimaryDark"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:textColor="#F8F8F8" />
 
 </RelativeLayout>
