@@ -10,4 +10,32 @@
         android:name="android.example.courses.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/courses_dest"
+        android:name="android.example.courses.CoursesFragment"
+        android:label="Courses" >
+        <action
+            android:id="@+id/action_courses_dest_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="android.example.courses.CourseDetailFragment"
+        android:label="Course Detail"
+        tools:layout="@layout/fragment_course_detail" >
+        <argument
+            android:name="courseId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/schedule_dest"
+        android:name="android.example.courses.ScheduleFragment"
+        android:label="Schedule"
+        tools:layout="@layout/fragment_schedule" />
 </navigation>

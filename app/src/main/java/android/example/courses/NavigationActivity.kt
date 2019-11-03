@@ -1,10 +1,12 @@
 package android.example.courses
 
+import android.example.courses.dataClasses.Course
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,7 +14,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 
-class NavigationActivity : AppCompatActivity() {
+class NavigationActivity : AppCompatActivity(),
+    CoursesFragment.OnCourseListFragmentListener {
+
     private lateinit var appBarConfiguration : AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +33,7 @@ class NavigationActivity : AppCompatActivity() {
 
         val drawerLayout : DrawerLayout? = findViewById(R.id.drawer_layout)
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.home_dest),
+            setOf(R.id.home_dest, R.id.courses_dest, R.id.schedule_dest),
             drawerLayout)
 
         setupActionBar(navController, appBarConfiguration)
@@ -63,5 +67,11 @@ class NavigationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return item.onNavDestinationSelected(findNavController(R.id.my_nav_host_fragment))
                 || super.onOptionsItemSelected(item)
+    }
+
+    override fun onCourseListFragmentInteraction(item: Course?) {
+        /* A course was selected, redirecting to detail fragment */
+        val bundle = bundleOf("courseId" to item?.id)
+        findNavController(R.id.my_nav_host_fragment).navigate(R.id.action_courses_dest_to_courseDetailFragment, bundle)
     }
 }
