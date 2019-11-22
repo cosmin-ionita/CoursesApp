@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/primary">
+        <item
+            android:id="@+id/home_dest"
+            android:icon="@drawable/ic_home_24px"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/courses_dest"
+            android:icon="@drawable/ic_menu_book_24px"
+            android:title="@string/courses" />
+        <item
+            android:id="@+id/schedule_dest"
+            android:icon="@drawable/ic_schedule_24px"
+            android:title="@string/schedule" />
+        <item
+            android:id="@+id/attendance_dest"
+            android:icon="@drawable/ic_insert_chart_24px"
+            android:title="@string/attendance" />
+        <item
+            android:id="@+id/grades_dest"
+            android:icon="@drawable/ic_show_chart_24px"
+            android:title="@string/grades" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/settings_dest"
+            android:icon="@drawable/ic_settings_applications_24px"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/help_dest"
+            android:icon="@drawable/ic_help_24px"
+            android:title="@string/help" />
+    </group>
+</menu>
