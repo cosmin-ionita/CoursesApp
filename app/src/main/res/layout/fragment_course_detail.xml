@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".CourseDetailFragment">
 
+    <include layout="@layout/loading_screen"/>
+
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
@@ -48,6 +50,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_notes_24px" />
                 <TextView
+                    android:id="@+id/courseDetailName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -70,6 +73,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_timeline_24px" />
                 <TextView
+                    android:id="@+id/courseDetailFrequency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -92,6 +96,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_my_location_24px" />
                 <TextView
+                    android:id="@+id/courseDetailRoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -115,6 +120,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_layers_24px" />
                 <TextView
+                    android:id="@+id/courseDetailStructure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -169,6 +175,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_person_24px" />
                 <TextView
+                    android:id="@+id/courseDetailTeacherName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -191,6 +198,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_phone_24px" />
                 <TextView
+                    android:id="@+id/courseDetailTeacherPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -215,6 +223,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_web_24px" />
                 <TextView
+                    android:id="@+id/courseDetailTeacherWebsite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -268,6 +277,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_check_circle_24px" />
                 <TextView
+                    android:id="@+id/courseDetailRequirement1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -290,6 +300,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_check_circle_24px" />
                 <TextView
+                    android:id="@+id/courseDetailRequirement2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -313,6 +324,7 @@
                     android:alpha="0.9"
                     android:src="@drawable/ic_check_circle_24px" />
                 <TextView
+                    android:id="@+id/courseDetailRequirement3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
