@@ -20,7 +20,8 @@ class AttendanceFragment : Fragment() {
     private var db = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
 
-    private var attendanceAdapter: FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder>? = null
+    private var attendanceAdapter: FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder>? =
+        null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +32,11 @@ class AttendanceFragment : Fragment() {
 
         attendanceAdapter = getAdapter(query)
 
-        val view = inflater.inflate(R.layout.fragment_attendance_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = attendanceAdapter
-            }
+        val view =
+            inflater.inflate(R.layout.fragment_attendance_list, container, false) as RecyclerView
+        with(view) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = attendanceAdapter
         }
         return view
     }
@@ -47,13 +47,20 @@ class AttendanceFragment : Fragment() {
             .build()
 
         return object : FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder>(options) {
-            override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int, model: Attendance) {
+            override fun onBindViewHolder(
+                holder: AttendanceViewHolder,
+                position: Int,
+                model: Attendance
+            ) {
                 holder.courseName.text = model.courseName
                 holder.totalLectures.text = model.totalCourses
                 holder.unnatendedLectures.text = model.unnatended
             }
 
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
+            override fun onCreateViewHolder(
+                parent: ViewGroup,
+                viewType: Int
+            ): AttendanceViewHolder {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.fragment_attendance_item, parent, false)
                 return AttendanceViewHolder(view)

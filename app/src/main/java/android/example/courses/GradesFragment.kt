@@ -30,12 +30,11 @@ class GradesFragment : Fragment() {
         val query = db.collection("grades/${auth.currentUser?.email}/data")
         gradesAdapter = getAdapter(query)
 
-        val view = inflater.inflate(R.layout.fragment_grades_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = gradesAdapter
-            }
+        val view = inflater.inflate(R.layout.fragment_grades_list, container, false) as RecyclerView
+
+        with(view) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = gradesAdapter
         }
         return view
     }
