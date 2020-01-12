@@ -33,14 +33,11 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val intent = Intent(this, NavigationActivity::class.java)
                     startActivity(intent)
-
+                    finish()
                 } else {
                     invalidCredentials()
                 }
             }
-
-        val intent = Intent(this, NavigationActivity::class.java)
-        startActivity(intent)
     }
 
     private fun invalidCredentials() {

@@ -1,6 +1,7 @@
 package android.example.courses
 
 import android.example.courses.dataClasses.Attendance
+import android.example.courses.viewModels.AttendanceViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,73 +10,56 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_attendance_item.view.*
 
 class AttendanceFragment : Fragment() {
-    private var db = FirebaseFirestore.getInstance()
-    private var auth = FirebaseAuth.getInstance()
-
-    private var attendanceAdapter: FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder>? =
-        null
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val query = db.collection("attendance/${auth.currentUser?.email}/data")
+        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[AttendanceViewModel::class.java]
+        val liveData = viewModel.getAttendanceLiveData()
 
-        attendanceAdapter = getAdapter(query)
+        liveData.observe(this, Observer {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = AttendanceRecyclerViewAdapter(it)
+        })
 
         val view =
             inflater.inflate(R.layout.fragment_attendance_list, container, false) as RecyclerView
         with(view) {
             layoutManager = LinearLayoutManager(context)
-            adapter = attendanceAdapter
+            adapter = AttendanceRecyclerViewAdapter(emptyList())
         }
+
+        recyclerView = view
+
         return view
     }
 
-    private fun getAdapter(query: CollectionReference): FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder> {
-        val options = FirestoreRecyclerOptions.Builder<Attendance>()
-            .setQuery(query, Attendance::class.java)
-            .build()
+    inner class AttendanceRecyclerViewAdapter(private var data: List<Attendance>) :
+        RecyclerView.Adapter<AttendanceViewHolder>() {
 
-        return object : FirestoreRecyclerAdapter<Attendance, AttendanceViewHolder>(options) {
-            override fun onBindViewHolder(
-                holder: AttendanceViewHolder,
-                position: Int,
-                model: Attendance
-            ) {
-                holder.courseName.text = model.courseName
-                holder.totalLectures.text = model.totalCourses
-                holder.unnatendedLectures.text = model.unnatended
-            }
-
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-            ): AttendanceViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.fragment_attendance_item, parent, false)
-                return AttendanceViewHolder(view)
-            }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.fragment_attendance_item, parent, false)
+            return AttendanceViewHolder(view)
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        attendanceAdapter?.startListening()
-    }
+        override fun getItemCount(): Int {
+            return data.count()
+        }
 
-    override fun onStop() {
-        super.onStop()
-        attendanceAdapter?.stopListening()
+        override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int) {
+            holder.courseName.text = data.get(position).courseName
+            holder.totalLectures.text = data.get(position).totalCourses
+            holder.unnatendedLectures.text = data.get(position).unnatended
+        }
     }
 
     inner class AttendanceViewHolder(view: View) : RecyclerView.ViewHolder(view) {
