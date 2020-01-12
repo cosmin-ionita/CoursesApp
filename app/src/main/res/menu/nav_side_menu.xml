@@ -24,12 +24,8 @@
     </group>
     <group>
         <item
-            android:id="@+id/settings_dest"
-            android:icon="@drawable/ic_settings_applications_24px"
-            android:title="@string/settings" />
-        <item
-            android:id="@+id/help_dest"
-            android:icon="@drawable/ic_help_24px"
-            android:title="@string/help" />
+            android:id="@+id/documents_dest"
+            android:icon="@drawable/ic_file_copy_24px"
+            android:title="@string/documents" />
     </group>
 </menu>

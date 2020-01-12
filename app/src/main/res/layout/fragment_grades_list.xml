@@ -2,11 +2,11 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="android.example.courses.CoursesFragment"
+    android:id="@+id/attendanceRecyclerView"
+    android:name="android.example.courses.GradesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d9d9d9"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".CoursesFragment"
-    tools:listitem="@layout/fragment_item" />
+    tools:context=".GradesFragment"
+    tools:listitem="@layout/fragment_attendance_item" />

@@ -38,4 +38,16 @@
         android:name="android.example.courses.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/attendance_dest"
+        android:name="android.example.courses.AttendanceFragment"
+        android:label="Attendance" />
+    <fragment
+        android:id="@+id/grades_dest"
+        android:name="android.example.courses.GradesFragment"
+        android:label="Grades" />
+    <fragment
+        android:id="@+id/documents_dest"
+        android:name="android.example.courses.DocumentsFragment"
+        android:label="Request document" />
 </navigation>

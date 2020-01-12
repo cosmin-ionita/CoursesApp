@@ -11,52 +11,72 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ScheduleFragment : Fragment() {
+    private var db = FirebaseFirestore.getInstance()
+    private var auth = FirebaseAuth.getInstance()
+
+    private var DAYS = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val container = inflater.inflate(R.layout.fragment_schedule, container, false)
-        val globalLinearLayout = container.findViewById<LinearLayout>(R.id.globalScheduleFrameLayout)
-        buildPage(globalLinearLayout)
+        val globalLinearLayout =
+            container.findViewById<LinearLayout>(R.id.globalScheduleFrameLayout)
+        buildSchedule(globalLinearLayout)
         return container
     }
 
-    private fun buildPage(container: LinearLayout) {
-        val day = "Monday"
-        val totalHours = "5.34 hours"
-
+    private fun buildSchedule(container: LinearLayout) {
         val layout = LinearLayout(context)
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT
         )
         params.setMargins(0, 10.dpToPx, 0, 0)
 
         layout.orientation = LinearLayout.VERTICAL
         layout.layoutParams = params
 
-        layout.addView(getDayHeader(day, totalHours))
+        var email = auth.currentUser?.email!!
 
-        layout.addView(getTableEntry("15:40", "DS Laboratory 1"))
-        layout.addView(getTableEntry("16:40", "DS Laboratory 2"))
-        layout.addView(getTableEntry("17:40", "DS Laboratory 3"))
-        layout.addView(getTableEntry("18:40", "DS Laboratory 4"))
+        db.collection("schedule").document(email)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    DAYS.forEach {
+                        val data = document.data?.get(it)
 
-        layout.addView(getDayHeader("Tuesday", totalHours))
-
-        layout.addView(getTableEntry("5:40", "DS Laboratory 1"))
-        layout.addView(getTableEntry("6:40", "DS Laboratory 2"))
-        layout.addView(getTableEntry("7:40", "DS Laboratory 3"))
-        layout.addView(getTableEntry("8:40", "DS Laboratory 4"))
-
+                        if (data != null) {
+                            updateLayout(layout, data as ArrayList<String>, it)
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                println(it)
+            }
         container.addView(layout)
     }
 
-    private fun getTableEntry(startHour : String, activityName: String) : LinearLayout {
+    private fun updateLayout(
+        layout: LinearLayout,
+        daySchedule: ArrayList<String>,
+        dayName: String
+    ) {
+        layout.addView(getDayHeader(dayName))
+
+        daySchedule.forEach {
+            layout.addView(getTableEntry(it.split(',')[1], it.split(',')[0]))
+        }
+    }
+
+    private fun getTableEntry(startHour: String, activityName: String): LinearLayout {
         val context = activity?.applicationContext
 
         val layout = LinearLayout(context)
@@ -80,7 +100,7 @@ class ScheduleFragment : Fragment() {
         return layout
     }
 
-    private fun getStartTimeTextView(startTime: String, context: Context) : TextView {
+    private fun getStartTimeTextView(startTime: String, context: Context): TextView {
         val view = TextView(context)
 
         view.setBackgroundColor(Color.parseColor("#EBAEB8FE"))
@@ -98,7 +118,7 @@ class ScheduleFragment : Fragment() {
         return view
     }
 
-    private fun getActivityNameTextView(activityName: String, context: Context) : TextView {
+    private fun getActivityNameTextView(activityName: String, context: Context): TextView {
         val view = TextView(context)
 
         val params = LinearLayout.LayoutParams(
@@ -114,7 +134,7 @@ class ScheduleFragment : Fragment() {
         return view
     }
 
-    private fun getDayHeader(day: String, totalHours: String) : LinearLayout {
+    private fun getDayHeader(day: String): LinearLayout {
         val context = activity?.applicationContext
 
         val innerLayout = LinearLayout(context)
@@ -132,28 +152,11 @@ class ScheduleFragment : Fragment() {
         innerLayout.layoutParams = innerParams
 
         innerLayout.addView(context?.let { getDayTextView(day, it) })
-        innerLayout.addView(context?.let { getTotalHoursTextView(totalHours, it) })
 
         return innerLayout
     }
 
-    private fun getTotalHoursTextView(totalHours: String, context: Context): TextView {
-        val view = TextView(context)
-
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        view.gravity = Gravity.END
-        params.weight = 5f
-
-        view.layoutParams = params
-        view.text = totalHours
-
-        return view
-    }
-
-    private fun getDayTextView(day: String, context: Context) : TextView {
+    private fun getDayTextView(day: String, context: Context): TextView {
         val view = TextView(context)
 
         val params = LinearLayout.LayoutParams(
@@ -166,6 +169,7 @@ class ScheduleFragment : Fragment() {
 
         view.layoutParams = params
         view.text = day
+        view.setTextColor(Color.parseColor("#ffffff"))
 
         return view
     }
